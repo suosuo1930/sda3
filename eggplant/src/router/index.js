@@ -7,6 +7,7 @@ import Luff_header from '@/components/Common/Luff_header'
 import Shouye from '@/components/Nav_components/Shouye'
 import Free from '@/components/Nav_components/Free'
 import Fight from '@/components/Nav_components/Fight'
+import Detail from "@/components/Detail/Detail";
 
 Vue.use(Router)
 export default new Router({
@@ -30,6 +31,11 @@ export default new Router({
       name: "fight",
       component: Fight,
     },
+    {
+      path:"detail/:courseId",
+      name: 'course_detail',
+      component: Detail,
+    }
 
   ]
 })

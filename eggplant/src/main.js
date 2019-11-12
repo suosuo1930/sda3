@@ -18,6 +18,11 @@ Vue.prototype.$bus = bus;
 import Luff_header from '@/components/Common/Luff_header'
 Vue.component(Luff_header.name, Luff_header)
 
+// 导入 Axios
+import Axiios from 'axios'
+// Vue.use(Axiios)
+Vue.prototype.$http = Axiios
+
 /* eslint-disable no-new */
 let vm = new Vue({
   el: '#app',

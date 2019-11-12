@@ -5,12 +5,11 @@
         <li @click = 'categoryHandler(index,category.id)' v-for="(category,index) in categoryList" :key = 'category.id' :class = '{active:index===cureentIndex}'>
           {{ category.name }}
         </li>
-
       </ul>
 
       <div class="courseList">
         <!-- 课程列表 -->
-        <div @click= 'courseHandler(course.id)' class="detail" v-for = '(course) in courseList' :key= 'course.id'>
+        <div @click= 'courseHandler(course.id)' class="detail" v-for = '(course) in showcourseList.courses' :key= 'course.id'>
           <div class="head">
             <img :src= 'course.course_img' alt class="backImg">
             <b class="mask" :style = '{background:course.colorName}'></b>
@@ -50,6 +49,7 @@
         cureentIndex:0,
         courseList:[],//课程列表
         categoryId:0,
+        showcourseList: {},
         colorsList:['darkorchid',"darkcyan","darkkhaki","darkorchid",'#00b4e4','darkorchid',"darkcyan","darkkhaki","darkorchid",'#00b4e4',
           'darkorchid',"darkcyan","darkkhaki","darkorchid",'#00b4e4','darkorchid',"darkcyan","darkkhaki","darkorchid",'#00b4e4','darkorchid',"darkcyan","darkkhaki","darkorchid",'#00b4e4']
       }
@@ -62,10 +62,11 @@
       //课程列表点击事件操作
       courseHandler(id){
         //1.跳转路由   编程式导航
+          console.log("id=",id)
         this.$router.push({
           name:'course_detail',
           params:{
-            courseId:id
+            courseId:id,
           }
         })
       },
@@ -74,45 +75,49 @@
         this.cureentIndex = index;
         this.categoryId = categtory_id;
         //获取分类列表的数据
-        this.getCourseList();
+        this.showcourseList = this.courseList[index]
+        console.log('77777777', this.showcourseList)
       },
+
       //获取分类列表
       getCategoryList(){
-        this.$http.categoryList()
-          .then(res=>{
-            console.log(res)
-            if(res.error_no === 0){
-              this.categoryList = res.data;
-              let firstCategory = {
-                id:0,
-                name:'全部',
-                category:0
-              };
-              this.categoryList.unshift(firstCategory)
-            }
-          })
-          .catch(err=>{
-            console.log(err);
-          })
+        this.$http.get("https://www.luffycity.com/api/v1/course_sub/category/list/?belong=1")
+        .then(res=>{
+          let data = res.data
+          if(data.error_no === 0){
+            this.categoryList = data.data;
+            let firstCategory = {
+              id:0,
+              name:'全部',
+              category:0
+            };
+            this.categoryList.unshift(firstCategory)
+              console.log('categoryList==', this.categoryList)
+          }
+            this.getCourseList(); // 获取 所有的 课程
+        })
+        .catch(err=>{
+          console.log(err);
+        })
       },
-      //获取课程列表
-      getCourseList(){
-        this.$http.courseList(this.categoryId)
-          .then(res=>{
-            //   console.log(res)
-            if(res.error_no === 0){
-              this.courseList = res.data;
-              //$.each()
-              this.courseList.forEach((element,index)=>{
-                element.colorName = this.colorsList[index]
-              })
-              console.log(this.courseList);
-            }
 
-          })
-          .catch(err=>{
-            console.log(err);
-          })
+      // 获取课程列表
+      getCourseList(){
+        this.$http.get("https://www.luffycity.com/api/v1/free/category/")
+        .then(res=>{
+            console.log("----",res)
+            this.courseList = res.data.data;
+            //$.each()
+              console.log("88888", this.courseList)
+            // this.courseList.forEach((element,index)=>{
+            //   element.colorName = this.colorsList[index]
+            // })
+
+
+        })
+        .catch(err=>{
+          console.log(err);
+        })
       }
     }
   };
