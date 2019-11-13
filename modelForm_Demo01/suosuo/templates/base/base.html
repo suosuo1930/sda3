@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="/static/js/jquery.min.js"></script>
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+        <script src="/static/js/bootstrap.min.js"></script>
+        <style>
+            .sidebar{
+                border-right: 1px solid black;
+                height: 100%;
+            }
+            .body-content{
+                height: 700px;
+            }
+
+
+
+        </style>
+    </head>
+    <body>
+        {% include 'components/nav.html' %}
+
+        <div class="container-fluid">
+             <div class="row body-content">
+                <div class="col-lg-2 col-md-4 sidebar" >
+
+
+
+                </div>
+                <div class="col-lg-10 col-md-8 content">
+                    {% block content_right %}
+                    
+                    {% endblock %}
+
+                </div>
+            </div>
+        </div>
+        <script>
+
+        </script>
+    </body>
+
+</html>
